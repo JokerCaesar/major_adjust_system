@@ -55,7 +55,7 @@ public class PauseTableServiceImpl extends BaseServiceImpl<PauseTable> implement
 				List<DetailwarningTable> detailwarningMajors = detailwarningTableService
 						.getWarningMajorByMajorCode(item);
 				DetailwarningTable detailwarningMajor = detailwarningMajors.get(0);
-				PauseTable pauseMajor = new PauseTable(year, item, detailwarningMajor.getMajorName(), "，连续两年被列为预警专业");
+				PauseTable pauseMajor = new PauseTable(year, item, detailwarningMajor.getMajorName(), " 十七(二) 连续两年被列为预警专业");
 				resultList1.add(pauseMajor);
 			}
 		}
@@ -87,7 +87,7 @@ public class PauseTableServiceImpl extends BaseServiceImpl<PauseTable> implement
 				// 这里从详细预警专业名单中去除的是重复的集合，但是只要专业代码和名字就可以了
 				MajorTable major = majorTableService.selectOne(item);
 				PauseTable pauseMajor = new PauseTable(year, item, major.getMajorName(),
-						"#连续两年转专业或专业分流后学生人数不足20人");
+						" 十七（三）连续两年转专业或专业分流后学生人数不足20人");
 				resultList2.add(pauseMajor);
 			}
 		}

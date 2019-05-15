@@ -12,8 +12,8 @@
   		SELECT * FROM `detailwarning_table` WHERE `major_code`=#{majorCode}
   </select>
   
-  <select id="getcauseMajorCode" resultType="java.lang.String">
-  		SELECT `major_code` FROM `detailwarning_table` GROUP BY `major_code` HAVING COUNT(`major_code`) >2
+  <select id="getcauseMajorCode" resultType="cn.sucec.major_adjust_system.model.DetailwarningTable">
+  		SELECT * FROM `detailwarning_table` GROUP BY `major_code` HAVING COUNT(`major_code`) >2
   </select>
   
   <select id="getAll" resultType="cn.sucec.major_adjust_system.model.DetailwarningTable">

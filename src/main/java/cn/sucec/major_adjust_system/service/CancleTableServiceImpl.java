@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import cn.sucec.major_adjust_system.dao.BaseDao;
 import cn.sucec.major_adjust_system.dao.CancleTableDao;
 import cn.sucec.major_adjust_system.model.CancleTable;
+import cn.sucec.major_adjust_system.model.DetailwarningTable;
 import cn.sucec.major_adjust_system.model.MajorTable;
 
 @Service("cancleTableService")
@@ -34,14 +35,20 @@ public class CancleTableServiceImpl extends BaseServiceImpl<CancleTable> impleme
 
 		// 1.五年内累计三次列入预警名单的 思路：通过detailwarningTableService里的方法查出在详细预警
 		// 里次数达到三次的专业的专业代码
-		String cancleMajorCode = detailwarningTableService.getcauseMajorCode();
-		if (cancleMajorCode != null) {
+		List<DetailwarningTable> cancleMajors1 = detailwarningTableService.getcauseMajorCode();
+		if (cancleMajors1 != null) {
 			// System.out.println(cancleMajorCode);
-			String cancleMajorName = majorTableService.getMajorName(cancleMajorCode);
-			// System.out.println(cancleMajorName);
-			String cancleReason1 = "#五年内累计三次列入预警名单";
-			CancleTable cancleMajor = new CancleTable(year, cancleMajorCode, cancleMajorName, cancleReason1);
-			add(cancleMajor);
+			for (DetailwarningTable cancleMajor : cancleMajors1) {
+				if (cancleMajor.getWarningYear() > year-5 ) {
+					String cancleMajorName = majorTableService.getMajorName(cancleMajor.getMajorCode());
+					String cancleReason1 = " 十九(一) 五年内累计三次列入预警名单";
+					CancleTable cancleMajor2 = new CancleTable(year, cancleMajor.getMajorCode(), cancleMajorName, cancleReason1);
+					add(cancleMajor2);
+				}
+				else {
+					return;
+				}
+			}
 		} else {
 			return;
 		}
@@ -50,7 +57,7 @@ public class CancleTableServiceImpl extends BaseServiceImpl<CancleTable> impleme
 		List<MajorTable> cancleMajors = majorTableService.getWuNianWeiZhaoSheng();
 		// System.out.println(cancleMajors);
 		if (cancleMajors != null) {
-			String cancleReason2 = "#连续五年未招生的专业";
+			String cancleReason2 = " 十九(二) 连续五年未招生的专业";
 			for (MajorTable cancleMajor1 : cancleMajors) {
 				CancleTable cancleTable2 = new CancleTable(year, cancleMajor1.getMajorCode(),
 						cancleMajor1.getMajorName(), cancleReason2);
